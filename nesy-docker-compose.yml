@@ -66,9 +66,21 @@ services:
       - /Users/talha/redis-conf/users.acl:/data/users.acl
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
 
+  redis-ui:
+    container_name: redis-ui
+    image: rediscommander/redis-commander:latest
+    environment:
+      REDIS_HOSTS: redis
+      REDIS_HOST: redis
+      REDIS_PORT: redis:6379
+      HTTP_USER: root
+      HTTP_PASSWORD: developer
+    ports:
+      - 8081:8081
+
   proxy:
     image: nginx:stable-alpine
-    container_name: nesy_proxy
+    container_name: nesy-proxy
     ports:
       - "8080:80"
     volumes:
@@ -78,12 +90,27 @@ services:
 
   cors-init:
     image: python:3.10-alpine
-    container_name: cors_init
+    container_name: cors-init
     working_dir: /opt
     volumes:
       - ./add_cors_microservices.py:/opt/add_cors_microservices.py:ro
       - ./projects/nesy/NESY.WebAPI:/opt/projects/nesy/NESY.WebAPI:rw
     entrypoint: ["python", "add_cors_microservices.py"]
+    restart: "no"
+    depends_on:
+      - mongodb
+      - redis
+      - kafka
+      - zookeeper
+
+  mobile-init:
+    image: python:3.10-alpine
+    container_name: mobile-init
+    working_dir: /opt
+    volumes:
+      - ./mobile_setlocalhost.py:/opt/mobile_setlocalhost.py:ro
+      - ./projects/nesy/NESY.Courier.Mobile:/opt/projects/nesy/NESY.Courier.Mobile:rw
+    entrypoint: ["python", "mobile_setlocalhost.py"]
     restart: "no"
     depends_on:
       - mongodb
