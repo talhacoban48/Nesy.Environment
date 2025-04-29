@@ -1,8 +1,9 @@
 import os
 
 
-base = os.getcwd()
-project_folder = os.path.join(base, "projects", "nesy", "NESY.WebAPI")
+print(os.getcwd())
+
+project_folder = "/opt/projects/nesy/NESY.WebAPI"
 
 os.chdir(project_folder)
 
@@ -28,7 +29,6 @@ for api in os.listdir(project_folder):
 
             if (control in codes):
                 codes = codes.replace(control, change)
-                print(codes)
                 with open(os.path.join(api, "Startup.cs"), "w") as Startup:
                     Startup.write(codes)
 

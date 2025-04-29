@@ -53,7 +53,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongodb_data:/data/db
+      - talha_mongodb_data:/data/db
 
   redis:
     image: redis:6.0
@@ -94,7 +94,7 @@ services:
     working_dir: /opt
     volumes:
       - ./add_cors_microservices.py:/opt/add_cors_microservices.py:ro
-      - ./projects/nesy/NESY.WebAPI:/opt/projects/nesy/NESY.WebAPI:rw
+      - ../NESY.WebAPI:/opt/projects/nesy/NESY.WebAPI:rw
     entrypoint: ["python", "add_cors_microservices.py"]
     restart: "no"
     depends_on:
@@ -109,7 +109,7 @@ services:
     working_dir: /opt
     volumes:
       - ./mobile_setlocalhost.py:/opt/mobile_setlocalhost.py:ro
-      - ./projects/nesy/NESY.Courier.Mobile:/opt/projects/nesy/NESY.Courier.Mobile:rw
+      - ../NESY.Courier.Mobile:/opt/projects/nesy/NESY.Courier.Mobile:rw
     entrypoint: ["python", "mobile_setlocalhost.py"]
     restart: "no"
     depends_on:
@@ -127,8 +127,8 @@ volumes:
     driver: local
   kafka_data:
     driver: local
-  mongodb_data:
-    driver: local
+  talha_mongodb_data:
+    external: true
   redis_data:
     driver: local
 

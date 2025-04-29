@@ -1,8 +1,8 @@
 import os
 
 
-base = os.getcwd()
-project_folder = os.path.join(base, "projects", "nesy", "NESY.Courier.Mobile")
+project_folder = "/opt/projects/nesy/NESY.Courier.Mobile"
+
 
 control = """
             buildConfigField "String", "BASE_URL", '"https://nesy-arasdx-dev-api.araskargo.com.tr/"'
